@@ -2,6 +2,54 @@ from lib2to3.pgen2.token import NEWLINE
 from linecache import getline
 from sre_parse import State
 from tkinter import *
+import re
+from unittest import result
+keywords = re.compile(r'float|int|else|if|print')
+operators = re.compile(r'=|\+|>|\*')
+separators = re.compile(r'\(|\)|:|\'|;')
+indentifiers = re.compile(r'[a-zA-Z]+\d|[a-zA-Z]+')
+int_literal = re.compile(r'\d+')
+float_literal = re.compile(r'\d+\.+\d+')
+string_literal = re.compile(r'\w+')
+
+def CutOneLineTokens(line,obj):
+    outputList = []
+    while(len(line)!=0):
+        line = line.lstrip()
+        if(keywords.match(line) != None):   #keywords
+            result = keywords.match(line)
+            outputList.append(f"<key,{result.group(0)}>")
+            line = line[result.end():]
+        elif(indentifiers.match(line) != None):   #identifiers
+            result = indentifiers.search(line)
+            outputList.append(f'<id,{result.group(0)}>')
+            line = line[result.end():]
+        elif(operators.match(line) != None): #operators
+            result = operators.search(line)
+            outputList.append(f'<op,{result.group(0)}>')
+            line = line[result.end():]
+        elif(separators.match(line) != None):   #separators 
+            result = separators.search(line)
+            outputList.append(f'<sep,{result.group(0)}>')
+            line = line[result.end():]
+            if(result.group(0) == '\''):
+                if(string_literal.search(line) != None):   #string-literals
+                    result = string_literal.search(line)
+                    outputList.append(f'<lit,{result.group(0)}>')
+                    line = line[result.end():]
+                    line = line.lstrip()
+        elif(float_literal.match(line) != None):   #float-literals
+            result = float_literal.search(line)
+            outputList.append(f'<lit,{result.group(0)}>')
+            line = line[result.end():]
+        elif(int_literal.search(line) != None):   #int-literals
+            result = int_literal.search(line)
+            outputList.append(f'<lit,{result.group(0)}>')
+            line = line[result.end():]
+
+    obj.print_line(outputList)
+    #print(outputList)
+
 
 class GUI:
     def __init__(self, root):
@@ -13,6 +61,7 @@ class GUI:
         self.master.config(bg="black")
 
         self.line_num = 0 # number to hold current line
+        self.line_num_out = 1   # current line number of the output
 
         # top left and right frames
         self.UI_frame_top_left = Frame(self.master,width=550,height=100,bg="black").grid(row=0,column=0)
@@ -54,6 +103,7 @@ class GUI:
     # function to copy and paste line by line from input box to output box
     def get_line(self):
         if(self.input_code.get(str(self.line_num+1)+'.0',str(self.line_num+1)+".0 lineend") != ""):
+            
             input = self.input_code.get(str(self.line_num+1)+'.0',str(self.line_num+1)+".0 lineend")
             self.line_num += 1
             self.line.config(state=NORMAL)
@@ -61,12 +111,28 @@ class GUI:
             self.line.insert(0,str(self.line_num))
             self.line.config(state=DISABLED)
 
-            self.output_lex.config(state=NORMAL)
-            self.output_lex.insert(str(self.line_num)+'.0',input+'\n')
-            self.output_lex.config(state=DISABLED)
+            input = input.lstrip()
+            CutOneLineTokens(input,self)
+            
+            #self.output_lex.config(state=NORMAL)
+            #self.output_lex.insert(str(self.line_num)+'.0',input+'\n')
+            #self.output_lex.config(state=DISABLED)
+            
+
+    def print_line(self,arr):
+        self.output_lex.config(state=NORMAL)
+        
+        for x in arr:
+            self.output_lex.insert(str(self.line_num_out)+'.0',x+'\n')
+            self.line_num_out += 1
+        self.output_lex.config(state=DISABLED)
+        print(self.line_num_out)
+           
+        print(arr)
 
     # function to reset both text boxes along with setting the initial value of line counter to 0
     def quit(self):
+        self.line_num_out = 0
         self.line_num = 0
         self.line.config(state=NORMAL)
         self.line.delete(0,END)
