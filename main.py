@@ -46,10 +46,7 @@ def CutOneLineTokens(line,obj):
             result = int_literal.search(line)
             outputList.append(f'<lit,{result.group(0)}>')
             line = line[result.end():]
-
     obj.print_line(outputList)
-    #print(outputList)
-
 
 class GUI:
     def __init__(self, root):
@@ -112,23 +109,16 @@ class GUI:
             self.line.config(state=DISABLED)
 
             input = input.lstrip()
+            print(input)
             CutOneLineTokens(input,self)
-            
-            #self.output_lex.config(state=NORMAL)
-            #self.output_lex.insert(str(self.line_num)+'.0',input+'\n')
-            #self.output_lex.config(state=DISABLED)
-            
 
     def print_line(self,arr):
         self.output_lex.config(state=NORMAL)
         
         for x in arr:
-            self.output_lex.insert(str(self.line_num_out)+'.0',x+'\n')
+            self.output_lex.insert(str(self.line_num_out)+'.0',x)
             self.line_num_out += 1
         self.output_lex.config(state=DISABLED)
-        print(self.line_num_out)
-           
-        print(arr)
 
     # function to reset both text boxes along with setting the initial value of line counter to 0
     def quit(self):
