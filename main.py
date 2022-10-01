@@ -6,7 +6,7 @@ import re
 from unittest import result
 keywords = re.compile(r'float|int|else|if|print')
 operators = re.compile(r'=|\+|>|\*')
-separators = re.compile(r'\(|\)|:|\'|;')
+separators = re.compile(r'\(|\)|:|\'|;|^"|^“|^”')
 indentifiers = re.compile(r'[a-zA-Z]+\d|[a-zA-Z]+')
 int_literal = re.compile(r'\d+')
 float_literal = re.compile(r'\d+\.+\d+')
@@ -32,7 +32,7 @@ def CutOneLineTokens(line,obj):
             result = separators.search(line)
             outputList.append(f'<sep,{result.group(0)}>')
             line = line[result.end():]
-            if(result.group(0) == '\''):
+            if(result.group(0) == '\'' or result.group(0) == '"' or result.group(0) == '“' or result.group(0) == '”'):
                 if(string_literal.search(line) != None):   #string-literals
                     result = string_literal.search(line)
                     outputList.append(f'<lit,{result.group(0)}>')
