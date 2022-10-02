@@ -116,8 +116,8 @@ class GUI:
         self.output_lex.config(state=NORMAL)
         
         for x in arr:
-            self.output_lex.insert(str(self.line_num_out)+'.0',x)
-            self.line_num_out += 1
+            self.output_lex.insert(str(self.line_num_out)+'.0',x+'\n\n')
+            self.line_num_out += 2
         self.output_lex.config(state=DISABLED)
 
     # function to reset both text boxes along with setting the initial value of line counter to 0
