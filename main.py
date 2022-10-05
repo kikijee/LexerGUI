@@ -68,31 +68,31 @@ class GUI:
         self.UI_frame_left = Frame(self.master,width=550,height=320,bg="black").grid(row=1,column=0,padx=5,sticky=N)
 
         # source input
-        Label(self.UI_frame_left,text="Sorce Code Input:").grid(row=0,column=0,padx=50,pady=5,sticky=S)
-        self.input_code = Text(self.UI_frame_left,width=50,height=20,bg="#393b40",fg="#92c7d1")
+        Label(self.UI_frame_left,text="Sorce Code Input:",bg="#92c7d1").grid(row=0,column=0,padx=50,pady=5,sticky=S)
+        self.input_code = Text(self.UI_frame_left,width=50,height=20,bg="#393b40",fg="#92c7d1",bd=5)
         self.input_code.grid(row=1,column=0,sticky=N)
 
         # line counter
-        Label(self.UI_frame_left,text="Current Processing Line:").grid(row=2,column=0,padx=80,pady=5,sticky=W)
-        self.line = Entry(self.master)
+        Label(self.UI_frame_left,text="Current Processing Line:",bg="#92c7d1").grid(row=2,column=0,padx=80,pady=5,sticky=W)
+        self.line = Entry(self.master,bg="#92c7d1")
         self.line.grid(row=2,column=0,padx=5,pady=5)
         self.line.insert(0,str(self.line_num))
         self.line.config(state=DISABLED)
     
         # next button
-        self.next_button = Button(self.master,text="Next Line",command=self.get_line)
+        self.next_button = Button(self.master,text="Next Line",command=self.get_line,bg="#92c7d1")
         self.next_button.grid(row=3,column=0)
 
         # UI right side
         self.UI_frame_right = Frame(self.master,width=550,height=320,pady=5,bg="black").grid(row=1,column=1,padx=5,sticky=N)
 
         # lex output
-        Label(self.UI_frame_right,text="Lexical Analyzed Result:").grid(row=0,column=1,padx=50,pady=5,sticky=S)
-        self.output_lex = Text(self.UI_frame_right,width=50,height=20,state=DISABLED,bg="#393b40",fg="#92c7d1")
+        Label(self.UI_frame_right,text="Lexical Analyzed Result:",bg="#92c7d1").grid(row=0,column=1,padx=50,pady=5,sticky=S)
+        self.output_lex = Text(self.UI_frame_right,width=50,height=20,state=DISABLED,bg="#393b40",fg="#92c7d1",bd=5)
         self.output_lex.grid(row=1,column=1,sticky=N)
 
         # quit button
-        self.quit_button = Button(self.master,text="Quit",command=self.quit)
+        self.quit_button = Button(self.master,text="Quit",command=self.quit,bg="#92c7d1")
         self.quit_button.grid(row=3,column=1)
 
     ### FUNCTIONS ###
