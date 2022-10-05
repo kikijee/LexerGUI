@@ -69,10 +69,10 @@ class GUI:
 
         # source input
         Label(self.UI_frame_left,text="Sorce Code Input:").grid(row=0,column=0,padx=50,pady=5,sticky=S)
-        self.input_code = Text(self.UI_frame_left,width=50,height=20)
+        self.input_code = Text(self.UI_frame_left,width=50,height=20,bg="#393b40",fg="#92c7d1")
         self.input_code.grid(row=1,column=0,sticky=N)
 
-        # line reader
+        # line counter
         Label(self.UI_frame_left,text="Current Processing Line:").grid(row=2,column=0,padx=80,pady=5,sticky=W)
         self.line = Entry(self.master)
         self.line.grid(row=2,column=0,padx=5,pady=5)
@@ -88,7 +88,7 @@ class GUI:
 
         # lex output
         Label(self.UI_frame_right,text="Lexical Analyzed Result:").grid(row=0,column=1,padx=50,pady=5,sticky=S)
-        self.output_lex = Text(self.UI_frame_right,width=50,height=20,state=DISABLED)
+        self.output_lex = Text(self.UI_frame_right,width=50,height=20,state=DISABLED,bg="#393b40",fg="#92c7d1")
         self.output_lex.grid(row=1,column=1,sticky=N)
 
         # quit button
@@ -109,7 +109,6 @@ class GUI:
             self.line.config(state=DISABLED)
 
             input = input.lstrip()
-            print(input)
             CutOneLineTokens(input,self)
 
     def print_line(self,arr):
